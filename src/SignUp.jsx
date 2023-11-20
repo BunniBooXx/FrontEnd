@@ -10,60 +10,89 @@ const SignUpPage = () => {
     confirmPassword: '',
   });
 
+  const [formErrors, setFormErrors] = useState({});
+  const [flashMessage, setFlashMessage] = useState(null);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    setFormErrors({ ...formErrors, [name]: null });
   };
 
-  const handleSignup = () => {
-    const { username, password, confirmPassword } = formData;
+  const validateForm = () => {
+    const errors = {};
 
-    if (password === confirmPassword) {
-      // Perform signup logic (you might make an API call here)
-      try {
-        const url = `${BACKEND_URL}/auth/register`;
-        const options = {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            username,
-            password,
-          }),
-        };
+    if (!formData.username.trim()) {
+      errors.username = 'Username is required.';
+    }
 
-        fetch(url, options)
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.status === 'ok') {
-              console.log('Signup successful');
-              // Handle successful signup
-            } else {
-              console.error('Signup failed:', data.message);
-              // Handle the failure, show an error message, etc.
-            }
-          })
-          .catch((error) => {
-            console.error('Error in signup request:', error);
-            // Handle other errors, network issues, etc.
-          });
-      } catch (error) {
-        console.error('Error in signup:', error);
+    if (!formData.password.trim()) {
+      errors.password = 'Password is required.';
+    }
+
+    if (!formData.confirmPassword.trim()) {
+      errors.confirmPassword = 'Confirm Password is required.';
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      errors.confirmPassword = 'Passwords do not match.';
+    }
+
+    return errors;
+  };
+
+  const handleSignup = async () => {
+    const errors = validateForm();
+
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
+
+    try {
+      const url = `${BACKEND_URL}/auth/register`;
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: formData.username,
+          password: formData.password,
+        }),
+      };
+
+      const response = await fetch(url, options);
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log('Signup successful');
+        setFlashMessage({ type: 'success', message: 'Signup successful!' });
+        // Handle successful signup
+      } else {
+        console.error('Signup failed:', data.message);
+        setFlashMessage({ type: 'error', message: data.message });
+        // Handle the failure, show an error message, etc.
       }
-    } else {
-      console.error('Passwords do not match');
-      // Handle password mismatch
+    } catch (error) {
+      console.error('Error in signup request:', error);
+      setFlashMessage({ type: 'error', message: 'An error occurred. Please try again later.' });
+      // Handle other errors, network issues, etc.
     }
   };
 
   return (
     <SignUpForm
+      formData={formData}
+      formErrors={formErrors}
       onInputChange={handleInputChange}
       onSubmit={handleSignup}
+      flashMessage={flashMessage}
     />
   );
 };
 
 export default SignUpPage;
+
+
 

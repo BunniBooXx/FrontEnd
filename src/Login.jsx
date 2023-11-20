@@ -1,6 +1,8 @@
 import React from 'react';
 import LoginForm from './components/LoginForm';
 
+
+
 const LoginPage = ({ onLogin }) => {
   return (
     <div
@@ -23,7 +25,7 @@ const LoginPage = ({ onLogin }) => {
           backgroundImage: 'url("path/to/heart.avif")',
           backgroundSize: 'cover',
           filter: 'brightness(1.5) saturate(1.5)',
-          zIndex: 0, // Set a higher z-index for the background
+          zIndex: 0
         }}
       ></div>
       <div
@@ -34,15 +36,15 @@ const LoginPage = ({ onLogin }) => {
           boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.1)',
           maxWidth: '400px',
           width: '100%',
-          zIndex: 1, // Set a lower z-index for the form
+          zIndex: 1
         }}
       >
         <LoginForm onLogin={onLogin} />
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
           <p style={{ color: '#ff9eb8', fontSize: '14px', marginBottom: '5px' }}>
-            Super Cute and Feminine!
+            Start Your Romance!
           </p>
-          <p style={{ color: '#aed6f1', fontSize: '12px' }}>Lolita Style</p>
+          <p style={{ color: '#aed6f1', fontSize: '12px' }}>Adventures Await You</p>
         </div>
       </div>
     </div>

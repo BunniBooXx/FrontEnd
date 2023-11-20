@@ -7,7 +7,7 @@ const PlayGamePage = () => {
             {/* Your React components or page content */}
             <iframe
                 title="Ren'Py Game"
-                src="http://localhost:8000/renpy/game/index.html"  // Adjust the URL as needed
+                src="http://127.0.0.1:8042/index.html"  // Adjust the URL as needed
                 width="800"
                 height="600"
             />

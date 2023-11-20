@@ -40,12 +40,15 @@ const Navbar = ({ isLoggedIn, onLogout }) => {
                 <>
                   <li><Link to="/characters">Characters</Link></li>
                   <li><Link to="/play-game">Play Game</Link></li>
+                  <li><Link to="/user-profile"> User Profile </Link></li>
                   <li><button onClick={handleLogout}>Logout</button></li>
                 </>
               ) : (
                 <>
+                <li><Link to="/play-game">Play Game</Link></li>
                 <li><Link to="/characters">Characters</Link></li>
                   <li><Link to="/login">Login</Link></li>
+                  <li><Link to="/user-profile"> User Profile </Link></li>
                   <li><Link to="/signup">SignUp</Link></li>
                 </>
               )}

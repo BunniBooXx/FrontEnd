@@ -6,11 +6,14 @@ import { faDeaf } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import UserProfilePage from './UserProfilePage';
 import Home from './Home';
 import Login from './Login';
+import UserProfile from './components/UserProfile';
 import SignUp from './SignUp';
 import Characters from './Characters';
 import PlayGameFunc from './PlayGameFunc';
+import PlayGamePage from './components/PlayGame';
 
 function App() {
   const [text, setText] = useState('');
@@ -40,25 +43,22 @@ function App() {
 
   const handleLogin = async (credentials) => {
     try {
-      const response = await axios.post('your-backend-login-endpoint', credentials);
-      // Assuming your backend returns a token upon successful login
-      localStorage.setItem('authToken', response.data.token);
-      setLoggedIn(true);
+      const response = await axios.post('/auth/login', credentials);
+      // rest of the code
     } catch (error) {
       console.error('Error in login:', error);
     }
   };
-
+  
   const handleSignup = async (credentials) => {
     try {
-      const response = await axios.post('your-backend-signup-endpoint', credentials);
-      // Assuming your backend returns a token upon successful signup
-      localStorage.setItem('authToken', response.data.token);
-      setLoggedIn(true);
+      const response = await axios.post('/auth/register', credentials);
+      // rest of the code
     } catch (error) {
       console.error('Error in signup:', error);
     }
   };
+  
 
   return (
     <Router>
@@ -75,7 +75,8 @@ function App() {
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
           <Route path="/signup" element={<SignUp onSignup={handleSignup} />} />
           <Route path="/characters" element={<Characters />} />
-          <Route path="/play-game" element={<PlayGameFunc />} />
+          <Route path="/play-game" element={<PlayGameFunc onPlay = {PlayGamePage}/>} />
+          <Route path="/user-profile" element={<UserProfilePage />} />
         </Routes>
       </main>
       <Footer />

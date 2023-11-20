@@ -1,0 +1,39 @@
+.profile-container {
+    background-color: lightblue;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 8px;
+  }
+  
+  .editing {
+    background-color: lightpink;
+  }
+  
+  .input-field {
+    background-color: lightpink;
+    padding: 8px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .save-button,
+  .cancel-button,
+  .edit-button,
+  .delete-button {
+    background-color: lightblue;
+    color: white;
+    padding: 8px;
+    margin: 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .save-button:hover,
+  .cancel-button:hover,
+  .edit-button:hover,
+  .delete-button:hover {
+    background-color: darkblue;
+  }
+  
