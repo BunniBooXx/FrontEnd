@@ -1,6 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 const SignUpForm = ({ formData, formErrors, onInputChange, onSubmit, flashMessage }) => {
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async () => {
+    try {
+      setLoading(true);
+
+      // Assuming you have a backend endpoint for signup
+      const url = `${BACKEND_URL}/auth/register`;
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      };
+
+      const res = await fetch(url, options);
+      const data = await res.json();
+
+      if (res.status === 201) {
+        // Signup successful
+        console.log('Signup successful');
+        // Flash a success message or redirect, etc.
+      } else {
+        // Signup failed
+        console.error('Signup failed:', data.message);
+        // Handle the failure, show an error message, etc.
+      }
+    } catch (error) {
+      console.error('Error in signup request:', error);
+      // Handle other errors, network issues, etc.
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div
       style={{
@@ -71,10 +109,11 @@ const SignUpForm = ({ formData, formErrors, onInputChange, onSubmit, flashMessag
           <div className="flex items-center justify-center">
             <button
               type="button"
-              onClick={onSubmit}
-              className="bg-blue-500 text-white px-6 py-2 rounded-md"
+              onClick={handleSubmit}
+              className={`bg-blue-500 text-white px-6 py-2 rounded-md ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+              disabled={loading}
             >
-              Sign Up
+              {loading ? 'Signing Up...' : 'Sign Up'}
             </button>
           </div>
         </form>
@@ -84,3 +123,4 @@ const SignUpForm = ({ formData, formErrors, onInputChange, onSubmit, flashMessag
 };
 
 export default SignUpForm;
+

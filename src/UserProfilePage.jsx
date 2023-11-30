@@ -17,7 +17,7 @@ const UserProfilePage = () => {
       try {
         const authToken = localStorage.getItem('auth_token');
 
-        const response = await fetch(`${BACKEND_URL}/get_user_data`, {
+        const response = await fetch(`${BACKEND_URL}/auth/get_user_data`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ const UserProfilePage = () => {
     try {
       const authToken = localStorage.getItem('auth_token');
 
-      const response = await fetch(`${BACKEND_URL}/update_user/${user.id}`, {
+      const response = await fetch(`${BACKEND_URL}/auth/update_user/${user.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ const UserProfilePage = () => {
     try {
       const authToken = localStorage.getItem('auth_token');
 
-      const response = await fetch(`${BACKEND_URL}/delete_user/${user.id}`, {
+      const response = await fetch(`${BACKEND_URL}/auth/delete_user`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -98,9 +98,36 @@ const UserProfilePage = () => {
     }
   };
 
-  const handleEditClick = () => {
+  const handleEditClick =  async (formData) => {
+
     setEditing(true);
-  };
+    const authToken = localStorage.getItem('auth_token');
+
+      const response = await fetch(`${BACKEND_URL}/auth/update_user/${user.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}`,
+          credentials: 'include',
+        },
+        body: JSON.stringify({
+          username: formData.username,
+          password: formData.password,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update user data');
+      }
+
+      const updatedUser = await response.json();
+      setUser(updatedUser);
+      setEditing(false);
+
+      console.log('User data updated successfully');
+    };
+    
+
 
   const handleCancelClick = () => {
     setEditing(false);
@@ -122,9 +149,9 @@ const UserProfilePage = () => {
         ) : (
           <UserProfile
             user={user}
-            onEditClick={handleEditClick}
+            onUpdate={handleEditClick}
             onCancelClick={handleCancelClick}
-            onDeleteClick={handleDeleteClick}
+            onDelete={handleDeleteClick}
             onInputChange={handleInputChange}
           />
         )

@@ -1,7 +1,7 @@
 // components/LoginPage.jsx
 // components/PlayGameFunc.jsx
 import React from 'react';
-import PlayGamePage from './PlayGameFunc';  // Adjust the import as needed
+import PlayGamePage from './components/PlayGame';  // Adjust the import as needed
 
 const PlayGameFunc = ({ onPlay }) => {
   return (

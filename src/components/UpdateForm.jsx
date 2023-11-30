@@ -1,16 +1,71 @@
-// UpdateForm.jsx
 import React, { useState } from 'react';
 import './update.css';
 
-const UpdateForm = ({ user, onUpdate }) => {
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+
+
+const UpdateForm = ({ user, onUpdate, onDelete }) => {
   const [formData, setFormData] = useState({
     username: user.username || '',
     password: user.password || '',
     // Add other fields as needed
   });
 
-  const handleUpdateClick = () => {
-    onUpdate(formData);
+  const handleUpdateClick = async () => {
+    try {
+      const authToken = localStorage.getItem('auth_token'); // Assuming the auth token is stored in local storage
+
+      const response = await fetch(`${BACKEND_URL}/auth/update_user/${user.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}`,
+          // Add any other headers as needed
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        onUpdate(data.data); // Assuming onUpdate is a prop callback to handle successful update
+        console.log('User updated successfully');
+      } else {
+        console.error('Update failed:', data.message);
+        // Handle the failure, show an error message, etc.
+      }
+    } catch (error) {
+      console.error('Error in update request:', error);
+      // Handle other errors, network issues, etc.
+    }
+  };
+
+  const handleDeleteClick = async () => {
+    try {
+      const authToken = localStorage.getItem('auth_token'); // Assuming the auth token is stored in local storage
+
+      const response = await fetch(`${BACKEND_URL}/auth/delete_user/${user.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}`,
+          // Add any other headers as needed
+        },
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        onDelete(); // Assuming onDelete is a prop callback to handle successful deletion
+        console.log('User deleted successfully');
+      } else {
+        console.error('Deletion failed:', data.message);
+        // Handle the failure, show an error message, etc.
+      }
+    } catch (error) {
+      console.error('Error in deletion request:', error);
+      // Handle other errors, network issues, etc.
+    }
   };
 
   const handleInputChange = (e) => {
@@ -46,11 +101,17 @@ const UpdateForm = ({ user, onUpdate }) => {
         <button onClick={handleUpdateClick} className="update-button">
           Update Profile
         </button>
+        <button onClick={handleDeleteClick} className="delete-button">
+          Delete Account
+        </button>
       </div>
     </div>
   );
 };
 
 export default UpdateForm;
+
+
+
 
 

@@ -9,7 +9,6 @@ import Footer from './Footer';
 import UserProfilePage from './UserProfilePage';
 import Home from './Home';
 import Login from './Login';
-import UserProfile from './components/UserProfile';
 import SignUp from './SignUp';
 import Characters from './Characters';
 import PlayGameFunc from './PlayGameFunc';
@@ -19,14 +18,34 @@ function App() {
   const [text, setText] = useState('');
   const [audioContent, setAudioContent] = useState('');
 
+
+
+
+
+
   const handleTextChange = (event) => {
     setText(event.target.value);
   };
 
   const handleTTSRequest = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/tts', { text });
+      const response = await axios.get('http://localhost:5000/auth/tts?text=the weather is nice today');
       setAudioContent(response.data.audioContent);
+      const ctx = new AudioContext();
+      let audio;
+      fetch("http://127.0.0.1:5000/static/yona.mp3")
+        .then(data => data.arrayBuffer())
+        .then(arrayBuffer => ctx.decodeAudioData(arrayBuffer))
+        .then(decodedAudio => {
+          audio = decodedAudio;
+          const playSound = ctx.createBufferSource();
+          playSound.buffer = audio; 
+          console.log(playSound)
+          playSound.connect(ctx.destination)
+          playSound.start(ctx.currentTime);
+        }); 
+        
+
     } catch (error) {
       console.error('Error in TTS request:', error);
     }
@@ -43,7 +62,7 @@ function App() {
 
   const handleLogin = async (credentials) => {
     try {
-      const response = await axios.post('/auth/login', credentials);
+     // const response = await axios.post('/auth/login', credentials);
       // rest of the code
     } catch (error) {
       console.error('Error in login:', error);
