@@ -29,7 +29,7 @@ function App() {
 
   const handleTTSRequest = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/auth/tts?text=the weather is nice today');
+      const response = await axios.get('http://localhost:5000/auth/tts?text=welcome to yona of the dawn');
       setAudioContent(response.data.audioContent);
       const ctx = new AudioContext();
       let audio;
