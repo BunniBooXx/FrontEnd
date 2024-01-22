@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 console.log("label")
 console.log(process.env)
@@ -20,7 +20,7 @@ const LoginForm = ({ onLogin }) => {
   try {
     // Add loading state here if needed
 
-    const url = `${process.env.REACT_APP_BACKEND_URL}/auth/login`;
+    const url = `${BACKEND_URL}/auth/login`;
     const options = {
       method: 'POST',
       headers: {
@@ -85,7 +85,7 @@ const LoginForm = ({ onLogin }) => {
             >
               Login
             </button>
-            <a href="#" className="text-pink-500">
+            <a href="https://wwww.google.com" className="text-pink-500">
               Forgot Password?
             </a>
           </div>

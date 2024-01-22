@@ -15,7 +15,7 @@ import PlayGameFunc from './PlayGameFunc';
 import PlayGamePage from './components/PlayGame';
 
 function App() {
-  const [text, setText] = useState('');
+  
   const [audioContent, setAudioContent] = useState('');
 
 
@@ -23,9 +23,7 @@ function App() {
 
 
 
-  const handleTextChange = (event) => {
-    setText(event.target.value);
-  };
+
 
   const handleTTSRequest = async () => {
     try {
